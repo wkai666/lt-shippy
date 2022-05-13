@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"google.golang.org/grpc"
+	"github.com/asim/go-micro/v3"
 	"io/ioutil"
 	"log"
 	"os"
@@ -11,18 +11,11 @@ import (
 )
 
 const (
-	Address         = "localhost:50051"
+	ServiceName     = "go.micro.srv.consignment"
 	DefaultInfoFile = "consignment.json"
 )
 
 func main() {
-	// 连接到 grpc服务器
-	conn, err := grpc.Dial(Address, grpc.WithInsecure())
-	if err != nil {
-		log.Fatalf("connect err: %v", err)
-	}
-	defer conn.Close()
-
 	// 准备货物
 	infoFile := DefaultInfoFile
 	if len(os.Args) > 1 {
@@ -34,14 +27,16 @@ func main() {
 	}
 
 	// 客户端初始化
-	client := pb.NewShippingServiceClient(conn)
+	service := micro.NewService()
+	service.Init()
+	client := pb.NewShippingService(ServiceName, service.Client())
 
 	// 客户端调用 rpc 存储货物到仓库
 	resp, err := client.CreateConsignment(context.Background(), consignment)
 	if err != nil {
 		log.Fatalf("create consignment err: %v", err)
 	}
-	// 查看货物是否托运成功
+
 	log.Printf("created: %t", resp.Created)
 
 	// 调用 rpc 服务查看仓库中的货物

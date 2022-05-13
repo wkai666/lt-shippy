@@ -11,22 +11,25 @@ type Service struct {
 }
 
 // CreateConsignment 托运新的货物
-func (s *Service) CreateConsignment(ctx context.Context, req *pb.Consignment) (*pb.Response, error) {
+func (s *Service) CreateConsignment(ctx context.Context, req *pb.Consignment, res *pb.Response) error {
 	consignment, err := s.Repo.Create(req)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return &pb.Response{
+	res = &pb.Response{
 		Created:     true,
 		Consignment: consignment,
-	}, nil
+	}
+
+	return nil
 }
 
 // GetConsignments 查看仓库中的货物
-func (s *Service) GetConsignments(ctx context.Context, req *pb.Request) (*pb.Response, error) {
-	allConsignments := s.Repo.GetAll()
-	return &pb.Response{
-		Consignments: allConsignments,
-	}, nil
+func (s *Service) GetConsignments(ctx context.Context, req *pb.Request, res *pb.Response) error {
+	res = &pb.Response{
+		Consignments: s.Repo.GetAll(),
+	}
+
+	return nil
 }

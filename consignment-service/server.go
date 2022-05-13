@@ -1,31 +1,23 @@
 package main
 
 import (
-	"google.golang.org/grpc"
-	"log"
-	"net"
+	"github.com/asim/go-micro/v3"
 	pb "shippy/consignment-service/proto/consignment"
 	"shippy/consignment-service/service"
 )
 
-const (
-	PORT = ":50051"
-)
-
 func main() {
-	listener, err := net.Listen("tcp", PORT)
-	if err != nil {
-		log.Fatal("failed to listen: ", err)
-	}
-	log.Printf("listen on: %s\n", PORT)
+	server := micro.NewService(
+		micro.Name("go.micro.srv.consignment"),
+		micro.Version("latest"),
+	)
 
-	server := grpc.NewServer()
+	server.Init()
+
 	repo := service.Repository{}
+	pb.RegisterShippingServiceHandler(server.Server(), &service.Service{repo})
 
-	// 向 grpc 服务器注册微服务，此时会将自己实现的 service 与 ShippingServiceServer 绑定
-	pb.RegisterShippingServiceServer(server, &service.Service{repo})
-
-	if err := server.Serve(listener); err != nil {
-		log.Fatalf("failed to serve: %v", err)
+	if err := server.Run(); err != nil {
+		panic(err)
 	}
 }
