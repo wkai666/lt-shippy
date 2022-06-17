@@ -1,6 +1,8 @@
 package service
 
-import pb "shippy/consignment-service/proto/consignment"
+import (
+	pb "shippy/consignment-service/proto/consignment"
+)
 
 // IRepository 定义仓库
 type IRepository interface {

@@ -1,3 +1,7 @@
 .idea
 ./*/*/*.micro.go
 */*/*.pb.go
+*/proto/*/*.pb.go
+*/proto/*/*.pb.micro.go
+*/proto/*.pb.go
+*/proto/*.pb.micro.go

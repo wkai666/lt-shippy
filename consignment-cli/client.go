@@ -37,7 +37,7 @@ func main() {
 		log.Fatalf("create consignment err: %v", err)
 	}
 
-	log.Printf("created: %t", resp.Created)
+	log.Printf("created: %v", resp.Created)
 
 	// 调用 rpc 服务查看仓库中的货物
 	resp, err = client.GetConsignments(context.Background(), &pb.Request{})
