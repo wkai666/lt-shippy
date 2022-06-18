@@ -7,10 +7,10 @@ version: '3.1'
 # docker-compose stop $(docker ps -aq) 来停止所有正在运行的容器
 
 services:
-  consignment-cli:
-    build: ./consignment-cli
-    environment:
-      MICRO_REGISTRY: "mdns"
+#  consignment-cli:
+#    build: ./consignment-cli
+#    environment:
+#      MICRO_REGISTRY: "mdns"
 
   consignment-service:
     build: ./consignment-service
@@ -28,3 +28,44 @@ services:
     environment:
       MICRO_ADDRESS: ":50052"
       MICRO_REGISTRY: "mdns"
+      DB_HOST: "datastore:27017"
+
+  mongo:
+    image: mongo:5.0
+    container_name: shippy_mongo_5.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongo/data:/data/db:rw
+      - ./mongo/config:/data/configdb:rw
+    networks:
+      - service
+
+  mysql:
+    image: mysql:8.0
+    container_name: shippy_mysql_8.0
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./mysql_8.0:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=zg0825
+    networks:
+      - service
+
+  etcd:
+    image: quay.io/coreos/etcd
+    container_name: shippy_etcd_single
+    command: etcd -name etcd -advertise-client-urls http://0.0.0.0:2379 -listen-client-urls http://0.0.0.0:2379 -listen-peer-urls http://0.0.0.0:2380
+    ports:
+      - "12379:2379"
+      - "12380:2380"
+    volumes:
+      - ./etcd-data:/etcd-data
+    networks:
+      - service
+
+networks:
+  service:
+    external: true
