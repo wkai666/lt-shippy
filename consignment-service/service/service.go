@@ -17,7 +17,7 @@ func (s *Service) CreateConsignment(ctx context.Context, req *pb.Consignment, re
 		return err
 	}
 
-	res = &pb.Response{
+	*res = pb.Response{
 		Created:     true,
 		Consignment: consignment,
 	}
@@ -27,7 +27,7 @@ func (s *Service) CreateConsignment(ctx context.Context, req *pb.Consignment, re
 
 // GetConsignments 查看仓库中的货物
 func (s *Service) GetConsignments(ctx context.Context, req *pb.Request, res *pb.Response) error {
-	res = &pb.Response{
+	*res = pb.Response{
 		Consignments: s.Repo.GetAll(),
 	}
 
