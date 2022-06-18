@@ -2,5 +2,6 @@
 */*/*.go
 */proto/*/*.go
 */proto/*.go
+consignment-service/proto/consignment/*.go
 consignment-cli/consignment-cli
 consignment-service/consignment-service
