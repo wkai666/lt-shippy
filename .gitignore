@@ -1,7 +1,6 @@
 .idea
-./*/*/*.micro.go
-*/*/*.pb.go
-*/proto/*/*.pb.go
-*/proto/*/*.pb.micro.go
-*/proto/*.pb.go
-*/proto/*.pb.micro.go
+*/*/*.go
+*/proto/*/*.go
+*/proto/*.go
+consignment-cli/consignment-cli
+consignment-service/consignment-service
