@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	// 客户端初始化
+	// 客户端初始化 well done
 	service := micro.NewService()
 	service.Init()
 	client := pb.NewShippingService(common.ServiceConsignmentName, service.Client())
