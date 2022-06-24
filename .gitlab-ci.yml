@@ -2,12 +2,14 @@ default:
   image: golang:1.17.0-alpine3.13
 
 stages:
-  - install
   - build
   - deploy
 
-install-job:
-  stage: install
+build-job:
+  stage: build
+  only:
+    - dev
+    - master
   script:
     - go env -w GO111MODULE="on"
     - go env -w GOBIN=$GOPATH/bin
@@ -22,13 +24,6 @@ install-job:
       && echo Asia/Shanghai > /etc/timezone \
       && apk del tzdata
       && apk add protoc
-
-build-job:
-  stage: build
-  only:
-    - dev
-    - master
-  script:
     - make pbuild
     - cd vessel-service && make build && cd -
     - cd consignment-cli && make build && cd -
