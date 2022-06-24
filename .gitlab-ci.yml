@@ -15,9 +15,7 @@ install-job:
     - go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
     - go install github.com/micro/micro/v2/cmd/protoc-gen-micro@latest
     - apk update
-    - echo "https://mirrors.aliyun.com/alpine/v3.13/main/" > /etc/apk/repositories \
-      && echo "https://mirrors.aliyun.com/alpine/v3.13/community/" >> /etc/apk/repositories \
-      && apk add --no-cache tzdata \
+    - apk add --no-cache tzdata \
       && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime  \
       && echo Asia/Shanghai > /etc/timezone \
       && apk del tzdata
